@@ -1,0 +1,31 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Buy Now{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-sm-3">
+            <ul class="list-group">
+                <a href="{% url 'bottomwear' %}"><li class="list-group-item list-group-item-action">All Bottom Wears</li></a>
+                <a href="{% url 'bottomweardata' 'Nike'%}"><li class="list-group-item list-group-item-action">Nike</li></a>
+                <a href="{% url 'bottomweardata' 'Zara'%}"><li class="list-group-item list-group-item-action">Zara</li></a>
+                <a href="{% url 'bottomweardata' 'Below'%}"><li class="list-group-item list-group-item-action">Below 500</li></a>
+                <a href="{% url 'bottomweardata' 'Above'%}"><li class="list-group-item list-group-item-action">Above 500</li></a>
+            </ul>
+        </div>
+        <div class="col-sm-8">
+            <div class="row">
+                {% for bottomwear in bottomwear%}
+                <div class="col-sm-3 d-flex mx-5">
+                  <a href="{% url 'product-detail' bottomwear.id %}" class="btn">
+                    <div class="item mx-2 mt-2"><img src="{{bottomwear.product_image.url}}" alt="" height="200px"><span
+                        class="fw-bold">{{bottomwear.title}}</span><br><span class="fs-5">{{bottomwear.discount_price}}</span>
+                      </div>
+                  </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main-content %}

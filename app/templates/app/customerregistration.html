@@ -1,0 +1,71 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Customer Registration{% endblock title %}
+{% block main-content %}
+<div class="container">
+ <div class="row my-3">
+  <div class="col-sm-6 offset-sm-3">
+   <h3>Customer Registration</h3>
+   <hr>
+   <form action="" method="post" novalidate class="shadow p-5">
+      {% if messages %}
+    {% for message in messages %}
+   <div class="alert alert-primary" role="alert">
+      {{message}}
+   </div>
+    {% endfor %}
+{% endif %}
+      {% csrf_token %}
+      {% for fm in form%}
+      <div class="form-group mb-3">
+         {{fm.label_tag}} 
+         <div class="input-group">
+            {{ fm }}
+            {% if 'password' in fm.name %}
+              <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility('{{ fm.id_for_label }}')">
+                Show
+              </button>
+            {% endif %}
+          </div>
+         <small class="text-danger">{{fm.errors|striptags}}</small>
+      </div>
+      {% endfor %}
+      <input type="submit" value="Submit" class="btn btn-primary my-2">
+      <br>
+      <div class="text-center text-primary fw-bold">
+         <small>Existing User? <a href="{% url 'login'%}" class="text-danger">Login Now</a></small>
+      </div>
+   </form>
+  </div>
+ </div>
+</div>
+
+<script>
+   // Wait for the DOM to fully load
+   document.addEventListener("DOMContentLoaded",() => {
+       // Select all alert elements
+       const alerts = document.querySelectorAll(".alert");
+
+       // Hide each alert after 10 seconds
+       alerts.forEach(alert => {
+           setTimeout(() => {
+               alert.style.display = "none";
+           }, 10000); // 10000 milliseconds = 10 seconds
+       });
+   });
+
+      function togglePasswordVisibility(fieldId) {
+        const passwordField = document.getElementById(fieldId);
+        const showButton = passwordField.nextElementSibling;
+        
+        if (passwordField.type === "password") {
+          passwordField.type = "text";
+          showButton.textContent = "Hide";
+        } else {
+          passwordField.type = "password";
+          showButton.textContent = "Show";
+        }
+      }
+</script>
+
+{% endblock main-content %}
