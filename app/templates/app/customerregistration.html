@@ -9,16 +9,23 @@
    <hr>
    <form action="" method="post" novalidate class="shadow p-5">
       {% if messages %}
-    {% for message in messages %}
-   <div class="alert alert-primary" role="alert">
-      {{message}}
-   </div>
-    {% endfor %}
-{% endif %}
+        {% for message in messages %}
+          <div class="alert alert-primary" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
       {% csrf_token %}
-      {% for fm in form%}
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% for fm in form %}
       <div class="form-group mb-3">
-         {{fm.label_tag}} 
+         {{ fm.label_tag }}
          <div class="input-group">
             {{ fm }}
             {% if 'password' in fm.name %}
@@ -27,13 +34,13 @@
               </button>
             {% endif %}
           </div>
-         <small class="text-danger">{{fm.errors|striptags}}</small>
+         <small class="text-danger">{{ fm.errors|striptags }}</small>
       </div>
       {% endfor %}
       <input type="submit" value="Submit" class="btn btn-primary my-2">
       <br>
       <div class="text-center text-primary fw-bold">
-         <small>Existing User? <a href="{% url 'login'%}" class="text-danger">Login Now</a></small>
+         <small>Existing User? <a href="{% url 'login' %}" class="text-danger">Login Now</a></small>
       </div>
    </form>
   </div>
@@ -42,7 +49,7 @@
 
 <script>
    // Wait for the DOM to fully load
-   document.addEventListener("DOMContentLoaded",() => {
+   document.addEventListener("DOMContentLoaded", () => {
        // Select all alert elements
        const alerts = document.querySelectorAll(".alert");
 
@@ -54,18 +61,18 @@
        });
    });
 
-      function togglePasswordVisibility(fieldId) {
-        const passwordField = document.getElementById(fieldId);
-        const showButton = passwordField.nextElementSibling;
-        
-        if (passwordField.type === "password") {
-          passwordField.type = "text";
-          showButton.textContent = "Hide";
-        } else {
-          passwordField.type = "password";
-          showButton.textContent = "Show";
-        }
+   function togglePasswordVisibility(fieldId) {
+      const passwordField = document.getElementById(fieldId);
+      const showButton = passwordField.nextElementSibling;
+      
+      if (passwordField.type === "password") {
+         passwordField.type = "text";
+         showButton.textContent = "Hide";
+      } else {
+         passwordField.type = "password";
+         showButton.textContent = "Show";
       }
+   }
 </script>
 
 {% endblock main-content %}

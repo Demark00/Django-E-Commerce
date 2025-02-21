@@ -9,9 +9,16 @@
             <hr>
             <form action="" method="post" novalidate class="shadow p-5">
                 {% csrf_token %}
-                {% for fm in form%}
+                {% if form.non_field_errors %}
+                  <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                      <p>{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                {% for fm in form %}
                 <div class="form-group mb-3">
-                    {{fm.label_tag}}
+                    {{ fm.label_tag }}
                     <div class="input-group">
                         {{ fm }}
                         {% if 'password' in fm.name %}
@@ -19,15 +26,18 @@
                             Show
                           </button>
                         {% endif %}
-                      </div>
-                     <small class="text-danger">{{fm.errors|striptags}}</small>
+                    </div>
+                     <small class="text-danger">{{ fm.errors|striptags }}</small>
                 </div>
                 {% endfor %}
-                <small class="mt-5"><a href="{% url 'password_reset'%}">Forgot Password ?</a></small> <br>
+                <small class="mt-5"><a href="{% url 'password_reset' %}">Forgot Password ?</a></small> <br>
                 <input type="submit" value="Login" class="btn btn-primary mt-4">
                 <br>
-                <div class="text-center text-primary fw-bold"><small>New to ShoppinglyX ? <a
-                            href="{% url 'customerregistration' %}" class="text-danger">Create an Account</a> </small></div>
+                <div class="text-center text-primary fw-bold">
+                    <small>New to ShoppinglyX? 
+                        <a href="{% url 'customerregistration' %}" class="text-danger">Create an Account</a>
+                    </small>
+                </div>
             </form>
         </div>
     </div>
@@ -35,16 +45,16 @@
 
 <script>
     function togglePasswordVisibility(fieldId) {
-      const passwordField = document.getElementById(fieldId);
-      const showButton = passwordField.nextElementSibling;
-      
-      if (passwordField.type === "password") {
-        passwordField.type = "text";
-        showButton.textContent = "Hide";
-      } else {
-        passwordField.type = "password";
-        showButton.textContent = "Show";
-      }
+        const passwordField = document.getElementById(fieldId);
+        const showButton = passwordField.nextElementSibling;
+        
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            showButton.textContent = "Hide";
+        } else {
+            passwordField.type = "password";
+            showButton.textContent = "Show";
+        }
     }
-  </script>
+</script>
 {% endblock main-content %}
